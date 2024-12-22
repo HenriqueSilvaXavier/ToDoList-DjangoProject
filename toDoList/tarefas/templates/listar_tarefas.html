@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="toDoLogo.png" type="image/x-icon">
+</head>
+<body>
+    <h1>Em andamento:</h1>
+    <form method="POST" action="{% url 'atualizar_status' %}">
+        {% csrf_token %}
+        {% for tarefa in tarefas %}
+            {% if tarefa.status == 'em_andamento' %}
+                <div class="tarefas_em_andamento" style="background-color: yellow; padding: 20px; margin-bottom: 20px">
+                    <input type="checkbox" name="tarefa_ids[]" value="{{ tarefa.id }}"> Concluir
+                    <br>
+                    <button type="button" onclick="window.location.href='{% url 'excluir_tarefa' tarefa.id %}'">&#128465;</button>
+                    <button type="button" onclick="window.location.href='{% url 'editar_tarefa' tarefa.id %}'">&#9999;</button>
+                    <p>{{ tarefa.materia }}</p>
+                    <p>{{ tarefa.descricao }}</p>
+                    <p>{{ tarefa.prazo }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <button type="submit">Atualizar Status</button>
+        <button type="button" onclick="window.location.href='{% url 'criar_tarefa' %}'">+</button>
+    </form>
+
+    <h1>Concluída:</h1>
+    {% for tarefa in tarefas %}
+        {% if tarefa.status == 'concluida' %}
+            <div class="tarefas_em_andamento" style="background-color: lightgreen; padding: 20px; margin-bottom: 20px">
+                <button type="button" onclick="window.location.href='{% url 'excluir_tarefa' tarefa.id %}'">&#128465;</button>
+                <button type="button" onclick="window.location.href='{% url 'editar_tarefa' tarefa.id %}'">&#9999;</button>
+                <p>{{ tarefa.materia }}</p>
+                <p>{{ tarefa.descricao }}</p>
+                <p>{{ tarefa.prazo }}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <h1>Não feita:</h1>
+    {% for tarefa in tarefas %}
+        {% if tarefa.status == 'nao_feita' %}
+            <div style="background-color: lightcoral; padding: 20px; margin-bottom: 20px">
+                <button type="button" onclick="window.location.href='{% url 'excluir_tarefa' tarefa.id %}'">&#128465;</button>
+                <button type="button" onclick="window.location.href='{% url 'editar_tarefa' tarefa.id %}'">&#9999;</button>
+                <p>{{ tarefa.materia }}</p>
+                <p>{{ tarefa.descricao }}</p>
+                <p>{{ tarefa.prazo }}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>
